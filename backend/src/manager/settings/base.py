@@ -22,7 +22,12 @@ class Base(Configuration):
         "django.contrib.sessions",
         "django.contrib.messages",
         "django.contrib.staticfiles",
+        "drf_spectacular",
     ]
+
+    REST_FRAMEWORK = {
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    }
 
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
@@ -105,3 +110,9 @@ class Base(Configuration):
     # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "Manager Sales",
+        "DESCRIPTION": "Documentación de la API de gestión de ventas.",
+        "VERSION": "1.0.0",
+    }
