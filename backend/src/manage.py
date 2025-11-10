@@ -7,9 +7,13 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "smanager.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "manager.settings")
+    os.environ.setdefault("DJANGO_CONFIGURATION", "Dev")
     try:
+        from configurations import setup
         from django.core.management import execute_from_command_line
+
+        setup()
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "

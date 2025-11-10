@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+     - POSTGRES_DB=${DATABASE_NAME}
+     - POSTGRES_USER=${DATABASE_USER}
+     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+     - PGADMIN_DEFAULT_EMAIL=${DOCKER_PG_EMAIL}
+     - PGADMIN_DEFAULT_PASSWORD=${DOCKER_PG_PASSWORD}
+    ports:
+      - "${DOCKER_PG_PORT}:${DOCKER_PG_PORT}"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data: {}
