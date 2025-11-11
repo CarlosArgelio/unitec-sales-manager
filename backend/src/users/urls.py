@@ -1,12 +1,8 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from .views import UsersView, UserView
+from .views import UserListViewSet, UserViewSet
 
-urlpatterns = [
-    # 1. Endpoint to manager many users
-    # URL: /api/users/
-    path("", UsersView.as_view(), name="many users"),
-    # 2. Endpoint to GET, PUT, DELETE (Detail user)
-    # URL: /api/users/1/
-    path("<int:pk>/", UserView.as_view(), name="one user"),
-]
+router = DefaultRouter()
+router.register(r"", UserViewSet, basename="user")
+router.register(r"", UserListViewSet, basename="user_find_all")
+urlpatterns = router.urls
