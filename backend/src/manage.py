@@ -5,7 +5,8 @@ import os
 import sys
 
 
-def main():
+def main() -> None:
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "manager.settings")
     os.environ.setdefault("DJANGO_CONFIGURATION", "Dev")
