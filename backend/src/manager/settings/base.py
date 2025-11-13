@@ -24,6 +24,8 @@ class Base(Configuration):
         "django.contrib.staticfiles",
         "drf_spectacular",
         "src.products",
+        "src.clients",
+        "src.orders",
     ]
 
     REST_FRAMEWORK = {

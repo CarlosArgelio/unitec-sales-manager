@@ -1,9 +1,13 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from .views import DownloadTemplateOrderView, OrdersView, OrderView
+from .views import OrderHeaderViewSet, OrderRowViewSet
+
+router = DefaultRouter()
+
+router.register(r"header", OrderHeaderViewSet, basename="order_header")
+router.register(r"row", OrderRowViewSet, basename="order_row")
 
 urlpatterns = [
-    path("", OrdersView.as_view(), name="many orders"),
-    path("<int:pk>/", OrderView.as_view(), name="one order"),
-    path("templates/", DownloadTemplateOrderView.as_view(), name="template order"),
+    path("orders/", include(router.urls)),
 ]

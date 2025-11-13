@@ -18,7 +18,7 @@ class Product(TimeStampedModel):
     is_active: bool = models.BooleanField(default=True)
 
     # relations
-    Category = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="products"
     )
 
