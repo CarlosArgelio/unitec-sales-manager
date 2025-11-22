@@ -24,6 +24,8 @@ class Base(Configuration):
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "drf_spectacular",
+        "rest_framework",
+        "rest_framework.authtoken",
         "src.products",
         "src.clients",
         "src.orders",
