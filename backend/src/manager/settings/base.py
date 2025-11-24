@@ -1,5 +1,7 @@
+import os
 from pathlib import Path
 
+import dj_database_url
 import environ
 from configurations import Configuration
 from configurations.values import SecretValue
@@ -73,16 +75,7 @@ class Base(Configuration):
     # Database
     # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-    DATABASES = {
-        "default": {
-            "ENGINE": env.get_value("DATABASE_ENGINE"),
-            "NAME": env.get_value("DATABASE_NAME"),
-            "USER": env.get_value("DATABASE_USER"),
-            "PASSWORD": env.get_value("DATABASE_PASSWORD"),
-            "HOST": env.get_value("DATABASE_HOST"),
-            "PORT": env.get_value("DATABASE_PORT"),
-        }
-    }
+    DATABASES = {"default": dj_database_url.parse(os.getenv("DATABASE_URL", ""))}
 
     # Password validation
     # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -128,7 +121,7 @@ class Base(Configuration):
         "DESCRIPTION": "Documentación de la API de gestión de ventas.",
         "VERSION": "1.0.0",
     }
-    
+
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
