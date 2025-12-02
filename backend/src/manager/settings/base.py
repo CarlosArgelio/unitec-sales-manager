@@ -24,6 +24,8 @@ class Base(Configuration):
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "drf_spectacular",
+        'rest_framework',
+        'rest_framework.authtoken',
         "src.products",
         "src.clients",
         "src.orders",
@@ -33,6 +35,9 @@ class Base(Configuration):
         "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
         # Paginate configuration
         "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        ],
         "PAGE_SIZE": 10,
         "PAGE_SIZE_QUERY_PARAM": "page_size",
         "MAX_PAGE_SIZE": 100,
