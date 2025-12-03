@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from users.serializers import (
     UserSerializer,
-    UserSignUpSerilializer,
+    UserSignUpSerializer,
 )
 
 User = get_user_model()
@@ -68,7 +68,7 @@ class UserViewSet(viewsets.ViewSet):
 
     @extend_schema(summary="Crear usuario", request=UserSerializer)
     def create(self, request: HttpRequest) -> Response:
-        serializer = UserSignUpSerilializer(data=request.data)
+        serializer = UserSignUpSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(
                 serializer.error_messages, status=status.HTTP_400_BAD_REQUEST

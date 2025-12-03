@@ -146,15 +146,43 @@ export const useForm = (initialData = {}, validation = {}) => {
   const [touched, setTouched] = useState({});
 
   const handleChange = (name, value) => {
+  if (name && name.target && typeof name === 'object') {
+    const event = name;
+    const fieldName = event.target.name;
+    const fieldValue = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    
+    setData(prev => ({ ...prev, [fieldName]: fieldValue }));
+    
+    if (errors[fieldName]) {
+      setErrors(prev => ({ ...prev, [fieldName]: null }));
+    }
+  }
+  else {
     setData(prev => ({ ...prev, [name]: value }));
     
     // Limpiar error cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
-  };
+  }
+};
 
-  const handleBlur = (name) => {
+const handleBlur = (name) => {
+  // Si el primer parámetro es un evento de React
+  if (name && name.target && typeof name === 'object') {
+    const event = name;
+    const fieldName = event.target.name;
+    
+    setTouched(prev => ({ ...prev, [fieldName]: true }));
+    
+    // Validar campo específico
+    if (validation[fieldName]) {
+      const error = validation[fieldName](data[fieldName]);
+      setErrors(prev => ({ ...prev, [fieldName]: error }));
+    }
+  }
+  // Si se pasa el nombre como parámetro
+  else {
     setTouched(prev => ({ ...prev, [name]: true }));
     
     // Validar campo específico
@@ -162,7 +190,8 @@ export const useForm = (initialData = {}, validation = {}) => {
       const error = validation[name](data[name]);
       setErrors(prev => ({ ...prev, [name]: error }));
     }
-  };
+  }
+};
 
   const validate = () => {
     const newErrors = {};
