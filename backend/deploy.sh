@@ -11,18 +11,14 @@ SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME:-"admin"}
 SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-"admin@example.com"}
 SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-"secret"}
 
+PYTHON_COMMAND="import os; from django.contrib.auth import get_user_model; User = get_user_model(); username = '$USERNAME'; email = '$EMAIL'; password = '$PASSWORD'; if not User.objects.filter(username=username).exists(): User.objects.create_superuser(username=username, email=email, password=password); print(f'Superusuario {username} creado exitosamente.')"
+
 # 2. Crear el superusuario de forma no interactiva
 # Esto utiliza un script de Python para llamar a createsuperuser
 # sin que pida la entrada de datos.
 echo "Creando Superusuario si no existe..."
 
-python src/manage.py shell -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); \
-    username = os.environ.get('SUPERUSER_USERNAME', 'admin'); \
-    email = os.environ.get('SUPERUSER_EMAIL', 'admin@example.com'); \
-    password = os.environ.get('SUPERUSER_PASSWORD', 'secret'); \
-    if not User.objects.filter(username=username).exists(): \
-        User.objects.create_superuser(username=username, email=email, password=password); \
-        print(f'Superusuario {username} creado exitosamente.')"
+python src/manage.py shell -c "$PYTHON_COMMAND"
 
 # 3. Iniciar Gunicorn para correr la aplicación DRF
 echo "Iniciando Gunicorn..."
