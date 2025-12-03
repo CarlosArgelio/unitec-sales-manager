@@ -22,7 +22,7 @@ ls -al src/
 
 pwd
 
-python src/manager.py shell -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); \
+python manager.py shell -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); \
     username = os.environ.get('SUPERUSER_USERNAME', 'admin'); \
     email = os.environ.get('SUPERUSER_EMAIL', 'admin@example.com'); \
     password = os.environ.get('SUPERUSER_PASSWORD', 'secret'); \
