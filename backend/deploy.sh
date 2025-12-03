@@ -16,13 +16,7 @@ SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-"secret"}
 # sin que pida la entrada de datos.
 echo "Creando Superusuario si no existe..."
 
-ls -al
-
-ls -al src/
-
-pwd
-
-python manager.py shell -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); \
+python src/manage.py shell -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); \
     username = os.environ.get('SUPERUSER_USERNAME', 'admin'); \
     email = os.environ.get('SUPERUSER_EMAIL', 'admin@example.com'); \
     password = os.environ.get('SUPERUSER_PASSWORD', 'secret'); \
