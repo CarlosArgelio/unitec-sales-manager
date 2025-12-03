@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "id",
             "username",
             "first_name",
             "last_name",
@@ -17,15 +18,25 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserSignUpSerilializer(serializers.ModelSerializer):
+class UserSignUpSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(write_only=True, label="Confirmar contraseña")
+    
     class Meta:
         model = User
-        fields = ["email", "username", "password", "password2"]
+        fields = ["email", "username", "first_name", "last_name", "password", "password2"]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
 
     def validate(self, attrs: dict) -> dict:
         if attrs["password"] != attrs["password2"]:
             raise serializers.ValidationError(
                 {"password2": "Las contrasenas no coinciden"}
+            )
+        
+        if len(attrs["password"]) < 6:
+            raise serializers.ValidationError(
+                {"password": "La contraseña debe tener al menos 6 caracteres"}
             )
 
         return attrs

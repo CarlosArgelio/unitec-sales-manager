@@ -9,5 +9,5 @@ router.register(r"header", OrderHeaderViewSet, basename="order_header")
 router.register(r"row", OrderRowViewSet, basename="order_row")
 
 urlpatterns = [
-    path("orders/", include(router.urls)),
+    path("", include(router.urls)),
 ]
