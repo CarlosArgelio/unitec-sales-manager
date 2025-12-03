@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
-# 1. Configurar las credenciales del Superusuario con variables de entorno
-# Asegúrate de que estas variables de entorno (DJANGO_SUPERUSER_USERNAME, etc.)
-# estén configuradas en tu entorno de OnRender.
-#
-# Nota: Reemplaza 'tu_username' y 'tu_password' si no quieres usar variables
-# de entorno, pero se recomienda usarlas por seguridad.
-
+# 1. Configurar las credenciales del Superusuario
 SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME:-"admin"}
 SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-"admin@example.com"}
 SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-"secret"}
 
-PYTHON_COMMAND="import os; from django.contrib.auth import get_user_model; User = get_user_model(); username = '$USERNAME'; email = '$EMAIL'; password = '$PASSWORD'; if not User.objects.filter(username=username).exists(): User.objects.create_superuser(username=username, email=email, password=password); print(f'Superusuario {username} creado exitosamente.')"
+# CORRECCIÓN: Usar los nombres de variables de Bash correctos (SUPERUSER_...)
+# y usar \ antes de las variables para la interpolación correcta.
+PYTHON_COMMAND="import os; from django.contrib.auth import get_user_model; User = get_user_model(); username = '$SUPERUSER_USERNAME'; email = '$SUPERUSER_EMAIL'; password = '$SUPERUSER_PASSWORD'; if not User.objects.filter(username=username).exists(): User.objects.create_superuser(username=username, email=email, password=password); print(f'Superusuario $SUPERUSER_USERNAME creado exitosamente.')"
+
 
 # 2. Crear el superusuario de forma no interactiva
-# Esto utiliza un script de Python para llamar a createsuperuser
-# sin que pida la entrada de datos.
 echo "Creando Superusuario si no existe..."
 
+# Si tu manage.py está en el mismo nivel que src (como antes) el comando debe ser:
+# python manage.py shell -c "$PYTHON_COMMAND"
+#
+# Pero si el traceback indica la ruta: /opt/render/project/src/backend/src/manage.py
+# Y tú estás ejecutando desde /opt/render/project/src/, puede que necesites usar la ruta relativa:
 python src/manage.py shell -c "$PYTHON_COMMAND"
 
 # 3. Iniciar Gunicorn para correr la aplicación DRF
