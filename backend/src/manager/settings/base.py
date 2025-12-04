@@ -125,9 +125,6 @@ class Base(Configuration):
         "DESCRIPTION": "Documentación de la API de gestión de ventas.",
         "VERSION": "1.0.0",
         "SECURITY": [{"TokenAuth": []}],
-        "AUTHENTICATION_WHITELIST": [
-            "rest_framework.authentication.TokenAuthentication"
-        ],
         "COMPONENT_SPLIT_REQUEST": True,
         "COMPONENTS": {
             "securitySchemes": {
