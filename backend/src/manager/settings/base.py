@@ -124,6 +124,21 @@ class Base(Configuration):
         "TITLE": "Manager Sales",
         "DESCRIPTION": "Documentación de la API de gestión de ventas.",
         "VERSION": "1.0.0",
+        "SECURITY": [{"TokenAuth": []}],
+        "AUTHENTICATION_WHITELIST": [
+            "rest_framework.authentication.TokenAuthentication"
+        ],
+        "COMPONENT_SPLIT_REQUEST": True,
+        "COMPONENTS": {
+            "securitySchemes": {
+                "TokenAuth": {
+                    "type": "apiKey",
+                    "in": "header",
+                    "name": "Authorization",
+                    "description": "Ingrese: **Token &lt;su_token&gt;**",
+                },
+            }
+        },
     }
     CORS_ALLOW_ALL_ORIGINS = (
         True  # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
