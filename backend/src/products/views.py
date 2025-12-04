@@ -13,7 +13,10 @@ from products.models import Category, Product
 from products.serializers import CategorySerializer, ProductSerializer
 
 
-@extend_schema(tags=["products"])
+@extend_schema(
+    tags=["products"],
+    auth=[{"TokenAuth": []}],
+)
 class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
@@ -67,7 +70,10 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_409_CONFLICT)
 
 
-@extend_schema(tags=["products"])
+@extend_schema(
+    tags=["products"],
+    auth=[{"TokenAuth": []}],
+)
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
