@@ -104,7 +104,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         wb.save(response)
         return response
 
-    @action(detail=False, methods=["put"], url_path="upload-template-products")
+    @action(detail=False, methods=["put"], url_path="upload-template-category")
     def bulk_load_massive_products(self, request: HttpRequest) -> Response:
         file = request.FILES.get("file")
 
