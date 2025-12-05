@@ -1,39 +1,63 @@
-import React from 'react';
+import React from "react";
 
 // Layout principal de la aplicación
 export const MainLayout = ({ children }) => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {children}
-    </div>
-  );
+  return <div className="min-h-screen bg-gray-50">{children}</div>;
 };
 
 // Layout para páginas de autenticación
 export const AuthLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {children}
-      </div>
+      <div className="max-w-md w-full space-y-8">{children}</div>
     </div>
   );
 };
 
 // Layout del dashboard
-export const DashboardLayout = ({ 
-  children, 
-  sidebar, 
+export const DashboardLayout = ({
+  children,
+  sidebar,
   header,
-  activeItem = 'dashboard'
+  activeItem = "dashboard",
 }) => {
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: '📊', current: activeItem === 'dashboard' },
-    { name: 'Productos', href: '/products', icon: '📦', current: activeItem === 'products' },
-    { name: 'Clientes', href: '/clients', icon: '🏢', current: activeItem === 'clients' },
-    { name: 'Órdenes', href: '/orders', icon: '🛒', current: activeItem === 'orders' },
-    { name: 'Usuarios', href: '/users', icon: '👥', current: activeItem === 'users' },
-    { name: 'Configuración', href: '/settings', icon: '⚙️', current: activeItem === 'settings' },
+    {
+      name: "Dashboard",
+      href: "#/dashboard",
+      icon: "📊",
+      current: activeItem === "dashboard",
+    },
+    {
+      name: "Productos",
+      href: "#/products",
+      icon: "📦",
+      current: activeItem === "products",
+    },
+    {
+      name: "Clientes",
+      href: "#/clients",
+      icon: "🏢",
+      current: activeItem === "clients",
+    },
+    {
+      name: "Órdenes",
+      href: "#/orders",
+      icon: "🛒",
+      current: activeItem === "orders",
+    },
+    {
+      name: "Usuarios",
+      href: "#/users",
+      icon: "👥",
+      current: activeItem === "users",
+    },
+    {
+      name: "Configuración",
+      href: "#/settings",
+      icon: "⚙️",
+      current: activeItem === "settings",
+    },
   ];
 
   return (
@@ -47,7 +71,7 @@ export const DashboardLayout = ({
             <div className="flex items-center flex-shrink-0 px-4 py-5">
               <h1 className="text-xl font-bold text-gray-900">Sales Manager</h1>
             </div>
-            
+
             {/* Navigation */}
             <nav className="mt-5 flex-1 px-2 pb-4 space-y-1">
               {navigation.map((item) => (
@@ -56,15 +80,14 @@ export const DashboardLayout = ({
                   href={item.href}
                   className={`
                     group flex items-center px-2 py-2 text-sm font-medium rounded-md
-                    ${item.current
-                      ? 'bg-blue-100 text-blue-900'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ${
+                      item.current
+                        ? "bg-blue-100 text-blue-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }
                   `}
                 >
-                  <span className="mr-3 flex-shrink-0">
-                    {item.icon}
-                  </span>
+                  <span className="mr-3 flex-shrink-0">{item.icon}</span>
                   {item.name}
                 </a>
               ))}
@@ -97,7 +120,7 @@ export const DashboardLayout = ({
 
 // Componente de header
 // Componente de header
-export const Header = ({ user, onLogout, title = 'Dashboard' }) => {
+export const Header = ({ user, onLogout, title = "Dashboard" }) => {
   return (
     <div className="flex items-center justify-between w-full">
       {/* Breadcrumbs o título de página */}
@@ -112,7 +135,7 @@ export const Header = ({ user, onLogout, title = 'Dashboard' }) => {
           <button className="flex items-center space-x-3 text-sm">
             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               <span className="text-white font-medium">
-                {user?.username?.charAt(0).toUpperCase() || 'U'}
+                {user?.username?.charAt(0).toUpperCase() || "U"}
               </span>
             </div>
             <div className="hidden md:block text-left">
@@ -130,8 +153,18 @@ export const Header = ({ user, onLogout, title = 'Dashboard' }) => {
           className="p-2 text-gray-400 hover:text-red-500 transition-colors"
           title="Cerrar sesión"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
           </svg>
         </button>
       </div>
