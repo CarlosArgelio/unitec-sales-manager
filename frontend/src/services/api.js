@@ -49,7 +49,7 @@ api.interceptors.response.use(
 // Servicios de autenticación
 export const authService = {
   login: async (credentials) => {
-    const response = await api.post(API_BASE_URL + API_BASE_URL + '/auth/sign-in', credentials);
+    const response = await api.post(API_BASE_URL + '/auth/sign-in', credentials);
     // El backend devuelve directamente {token, user}, no response.data
     return response.data ? response.data : response;
   },
