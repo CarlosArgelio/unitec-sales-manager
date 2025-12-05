@@ -15,6 +15,8 @@ import { ClientsPage } from "./pages/ClientsPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { UsersPage } from "./pages/UsersPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { CategoriesPage } from "./pages/CategoriesPage";
+import { ProductsCategoriesPage } from "./pages/ProductsCategoriesPage";
 
 // Componente para rutas protegidas
 const ProtectedRoute = ({ children }) => {
@@ -87,7 +89,16 @@ function App() {
             path="/products/*"
             element={
               <ProtectedRoute>
-                <ProductsPage />
+                <ProductsCategoriesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/categories/*"
+            element={
+              <ProtectedRoute>
+                <CategoriesPage />
               </ProtectedRoute>
             }
           />
