@@ -3,10 +3,11 @@ import axios from 'axios';
 // Configuración base de la API
 // const API_BASE_URL = 'http://localhost:8000/api/v1';
 const API_BASE_URL = 'https://unitec-sales-manager.onrender.com/api/v1';
+console.log(API_BASE_URL)
 
 // Crear instancia de axios
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  // baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,7 +49,7 @@ api.interceptors.response.use(
 // Servicios de autenticación
 export const authService = {
   login: async (credentials) => {
-    const response = await api.post('/auth/sign-in', credentials);
+    const response = await api.post(API_BASE_URL + API_BASE_URL + '/auth/sign-in', credentials);
     // El backend devuelve directamente {token, user}, no response.data
     return response.data ? response.data : response;
   },
@@ -70,53 +71,53 @@ export const authService = {
 
 // Servicios de productos
 export const productsService = {
-  getAll: () => api.get('/products/'),
-  getById: (id) => api.get(`/products/${id}/`),
-  create: (data) => api.post('/products/', data),
-  update: (id, data) => api.put(`/products/${id}/`, data),
-  delete: (id) => api.delete(`/products/${id}/`),
+  getAll: () => api.get(API_BASE_URL + '/products/'),
+  getById: (id) => api.get(API_BASE_URL + `/products/${id}/`),
+  create: (data) => api.post(API_BASE_URL + '/products/', data),
+  update: (id, data) => api.put(API_BASE_URL + `/products/${id}/`, data),
+  delete: (id) => api.delete(API_BASE_URL + `/products/${id}/`),
 };
 
 // Servicios de categorías
 export const categoriesService = {
-  getAll: () => api.get('/categories/'),
-  getById: (id) => api.get(`/categories/${id}/`),
-  create: (data) => api.post('/categories/', data),
-  update: (id, data) => api.put(`/categories/${id}/`, data),
-  delete: (id) => api.delete(`/categories/${id}/`),
+  getAll: () => api.get(API_BASE_URL + '/categories/'),
+  getById: (id) => api.get(API_BASE_URL + `/categories/${id}/`),
+  create: (data) => api.post(API_BASE_URL + '/categories/', data),
+  update: (id, data) => api.put(API_BASE_URL + `/categories/${id}/`, data),
+  delete: (id) => api.delete(API_BASE_URL + `/categories/${id}/`),
 };
 
 // Servicios de clientes
 export const clientsService = {
-  getAll: () => api.get('/clients/'),
-  getById: (id) => api.get(`/clients/${id}/`),
-  create: (data) => api.post('/clients/', data),
-  update: (id, data) => api.put(`/clients/${id}/`, data),
-  delete: (id) => api.delete(`/clients/${id}/`),
+  getAll: () => api.get(API_BASE_URL + '/clients/'),
+  getById: (id) => api.get(API_BASE_URL + `/clients/${id}/`),
+  create: (data) => api.post(API_BASE_URL + '/clients/', data),
+  update: (id, data) => api.put(API_BASE_URL + `/clients/${id}/`, data),
+  delete: (id) => api.delete(API_BASE_URL + `/clients/${id}/`),
 };
 
 // Servicios de órdenes
 export const ordersService = {
-  getHeaders: () => api.get('/orders/header/'),
-  getHeaderById: (id) => api.get(`/orders/header/${id}/`),
-  createHeader: (data) => api.post('/orders/header/', data),
-  updateHeader: (id, data) => api.put(`/orders/header/${id}/`, data),
-  deleteHeader: (id) => api.delete(`/orders/header/${id}/`),
+  getHeaders: () => api.get(API_BASE_URL + '/orders/header/'),
+  getHeaderById: (id) => api.get(API_BASE_URL + `/orders/header/${id}/`),
+  createHeader: (data) => api.post(API_BASE_URL + '/orders/header/', data),
+  updateHeader: (id, data) => api.put(API_BASE_URL + `/orders/header/${id}/`, data),
+  deleteHeader: (id) => api.delete(API_BASE_URL + `/orders/header/${id}/`),
 
-  getRows: () => api.get('/orders/row/'),
-  getRowById: (id) => api.get(`/orders/row/${id}/`),
-  createRow: (data) => api.post('/orders/row/', data),
-  updateRow: (id, data) => api.put(`/orders/row/${id}/`, data),
-  deleteRow: (id) => api.delete(`/orders/row/${id}/`),
+  getRows: () => api.get(API_BASE_URL + '/orders/row/'),
+  getRowById: (id) => api.get(API_BASE_URL + `/orders/row/${id}/`),
+  createRow: (data) => api.post(API_BASE_URL + '/orders/row/', data),
+  updateRow: (id, data) => api.put(API_BASE_URL + `/orders/row/${id}/`, data),
+  deleteRow: (id) => api.delete(API_BASE_URL + `/orders/row/${id}/`),
 };
 
 // Servicios de usuarios
 export const usersService = {
-  getAll: () => api.get('/users/'),
-  getById: (id) => api.get(`/users/${id}/`),
-  create: (data) => api.post('/users/', data),
-  update: (id, data) => api.put(`/users/${id}/`, data),
-  delete: (id) => api.delete(`/users/${id}/`),
+  getAll: () => api.get(API_BASE_URL + '/users/'),
+  getById: (id) => api.get(API_BASE_URL + `/users/${id}/`),
+  create: (data) => api.post(API_BASE_URL + '/users/', data),
+  update: (id, data) => api.put(API_BASE_URL + `/users/${id}/`, data),
+  delete: (id) => api.delete(API_BASE_URL + `/users/${id}/`),
 };
 
 export default api;
