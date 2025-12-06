@@ -1,19 +1,16 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { DashboardLayout, Header } from "../components/Layout";
-import { Card, Button, Input, Select, Badge, Modal } from "../components/UI";
-import { useAuth } from "../hooks/useAuth";
-import { useApiData, useCrud, useForm } from "../hooks/useApi";
-import {
-  ordersService,
-  productsService,
-  clientsService,
-} from "../services/api";
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { DashboardLayout, Header } from '../components/Layout';
+import { Card, Button, Input, Select, Badge, Modal } from '../components/UI';
+import { useAuth } from '../hooks/useAuth';
+import { useApiData, useCrud, useForm } from '../hooks/useApi';
+import { ordersService, productsService, clientsService } from '../services/api';
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, logout } = useAuth();
-
+  
   // Estados locales
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -21,6 +18,16 @@ export const OrdersPage = () => {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
+
+  // acciones rápidas
+  useEffect(() => {
+    const action = searchParams.get('action');
+    if (action === 'new') {
+      handleNewOrder();
+      // Limpiar URL para evitar abrir modal en cada reload
+      navigate('/orders', { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   // Cargar datos
   const {

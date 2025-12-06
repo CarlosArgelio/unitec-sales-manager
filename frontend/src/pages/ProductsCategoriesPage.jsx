@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DashboardLayout, Header } from '../components/Layout';
 import { Card, Button, Input, Select, Badge, Modal, Tabs } from '../components/UI';
 import { useAuth } from '../hooks/useAuth';
@@ -9,6 +9,7 @@ import { CategoriesSection } from './CategoriesSection';
 
 export const ProductsCategoriesPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, logout } = useAuth();
   
   // Estados locales
@@ -18,6 +19,16 @@ export const ProductsCategoriesPage = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState('products');
+
+  // acciones rápidas
+  useEffect(() => {
+    const action = searchParams.get('action');
+    if (action === 'new') {
+      handleNewProduct();
+      // Limpiar URL para evitar abrir modal en cada reload
+      navigate('/products', { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   // Cargar datos
   const { data: products, loading, refetch } = useApiData(productsService.getAll, []);

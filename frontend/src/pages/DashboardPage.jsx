@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout, Header } from '../components/Layout';
 import { Card, Badge, Button } from '../components/UI';
 import { useAuth } from '../hooks/useAuth';
@@ -7,6 +8,7 @@ import { productsService, clientsService, ordersService } from '../services/api'
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   
   // Cargar datos para las métricas
   const { data: products } = useApiData(productsService.getAll, []);
@@ -19,32 +21,49 @@ export const DashboardPage = () => {
   const totalOrders = orders?.length || 0;
   const lowStockProducts = products?.filter(p => p.stock < 10).length || 0;
 
+  // Funciones para acciones rápidas
+  const handleNewProduct = () => {
+    navigate('/products?action=new');
+  };
+
+  const handleNewClient = () => {
+    navigate('/clients?action=new');
+  };
+
+  const handleNewOrder = () => {
+    navigate('/orders?action=new');
+  };
+
+  const handleViewInventory = () => {
+    navigate('/products');
+  };
+
   const quickActions = [
     {
       title: 'Nuevo Producto',
       description: 'Agregar producto al inventario',
-      href: '/products/new',
+      onClick: handleNewProduct,
       icon: '📦',
       color: 'bg-blue-500'
     },
     {
       title: 'Nuevo Cliente',
       description: 'Registrar cliente nuevo',
-      href: '/clients/new',
+      onClick: handleNewClient,
       icon: '🏢',
       color: 'bg-green-500'
     },
     {
       title: 'Nueva Orden',
       description: 'Crear orden de venta',
-      href: '/orders/new',
+      onClick: handleNewOrder,
       icon: '🛒',
       color: 'bg-purple-500'
     },
     {
       title: 'Ver Inventario',
       description: 'Revisar stock disponible',
-      href: '/products',
+      onClick: handleViewInventory,
       icon: '📊',
       color: 'bg-orange-500'
     }
@@ -134,6 +153,7 @@ export const DashboardPage = () => {
             {quickActions.map((action) => (
               <button
                 key={action.title}
+                onClick={action.onClick}
                 className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200 text-left"
               >
                 <div className="flex items-center mb-2">

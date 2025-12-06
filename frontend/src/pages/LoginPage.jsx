@@ -114,7 +114,7 @@ export const LoginPage = () => {
         </form>
       </Card>
 
-      <div className="text-center">
+      {/* <div className="text-center">
         <p className="text-sm text-gray-600">
           ¿No tienes una cuenta?{' '}
           <button
@@ -133,7 +133,7 @@ export const LoginPage = () => {
             ¿Olvidaste tu contraseña?
           </button>
         </p>
-      </div>
+      </div> */}
     </AuthLayout>
   );
 };

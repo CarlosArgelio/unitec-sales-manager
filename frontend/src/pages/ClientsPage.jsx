@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DashboardLayout, Header } from '../components/Layout';
 import { Card, Button, Input, Badge, Modal } from '../components/UI';
 import { useAuth } from '../hooks/useAuth';
@@ -8,12 +8,23 @@ import { clientsService } from '../services/api';
 
 export const ClientsPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, logout } = useAuth();
   
   // Estados locales
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingClient, setEditingClient] = useState(null);
+
+  // acciones rápidas
+  useEffect(() => {
+    const action = searchParams.get('action');
+    if (action === 'new') {
+      handleNewClient();
+      // Limpiar URL para evitar abrir modal en cada reload
+      navigate('/clients', { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   // Cargar datos
   const { data: clients, loading, refetch } = useApiData(clientsService.getAll, []);
