@@ -109,6 +109,11 @@ export const ordersService = {
   createRow: (data) => api.post(API_BASE_URL + '/orders/row/', data),
   updateRow: (id, data) => api.put(API_BASE_URL + `/orders/row/${id}/`, data),
   deleteRow: (id) => api.delete(API_BASE_URL + `/orders/row/${id}/`),
+
+  // Adaptador para usar con useCrud hook
+  create: (data) => api.post(API_BASE_URL + '/orders/header/', data),
+  update: (id, data) => api.put(API_BASE_URL + `/orders/header/${id}/`, data),
+  remove: (id) => api.delete(API_BASE_URL + `/orders/header/${id}/`),
 };
 
 // Servicios de usuarios

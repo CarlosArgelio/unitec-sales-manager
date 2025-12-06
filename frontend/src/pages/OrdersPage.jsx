@@ -12,8 +12,8 @@ export const OrdersPage = () => {
   const { user, logout } = useAuth();
   
   // Estados locales
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
@@ -37,7 +37,7 @@ export const OrdersPage = () => {
   } = useApiData(ordersService.getHeaders, []);
   const { data: clients } = useApiData(clientsService.getAll, []);
   const { data: products } = useApiData(productsService.getAll, []);
-
+  
   // Hooks para operaciones CRUD
   const {
     loading: saving,
@@ -75,42 +75,38 @@ export const OrdersPage = () => {
   );
 
   // Opciones para selects
-  const clientOptions =
-    clients?.map((client) => ({
-      value: client.ci,
-      label: `${client.ci} - ${client.name}`,
-    })) || [];
+  const clientOptions = clients?.map(client => ({
+    value: client.ci,
+    label: `${client.ci} - ${client.name}`
+  })) || [];
 
-  const productOptions =
-    products?.map((product) => ({
-      value: product.code,
-      label: `${product.code} - ${product.description} (Stock: ${product.stock})`,
-    })) || [];
+  const productOptions = products?.map(product => ({
+    value: product.code,
+    label: `${product.code} - ${product.description} (Stock: ${product.stock})`
+  })) || [];
 
   // Filtrar órdenes
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
-
-    return orders.filter((order) => {
-      const matchesSearch =
+    
+    return orders.filter(order => {
+      const matchesSearch = 
         order.id?.toString().includes(searchTerm) ||
         order.client?.name?.toLowerCase().includes(searchTerm.toLowerCase());
-
+      
       return matchesSearch;
     });
   }, [orders, searchTerm]);
 
   // Agregar producto a la orden
   const addOrderItem = (productCode) => {
-    const product = products.find((p) => p.code === productCode);
+    const product = products.find(p => p.code === productCode);
     if (!product) return;
 
-    const existingItem = orderItems.find(
-      (item) => item.product === productCode
-    );
+    const existingItem = orderItems.find(item => item.product === productCode);
     if (existingItem) {
-      setOrderItems((items) =>
-        items.map((item) =>
+      setOrderItems(items =>
+        items.map(item =>
           item.product === productCode
             ? { ...item, quantity: item.quantity + 1 }
             : item
@@ -122,8 +118,8 @@ export const OrdersPage = () => {
         {
           product: productCode,
           quantity: 1,
-          correlative: orderItems.length + 1,
-        },
+          correlative: orderItems.length + 1
+        }
       ]);
     }
   };
@@ -131,12 +127,10 @@ export const OrdersPage = () => {
   // Actualizar cantidad de un producto
   const updateItemQuantity = (productCode, quantity) => {
     if (quantity <= 0) {
-      setOrderItems((items) =>
-        items.filter((item) => item.product !== productCode)
-      );
+      setOrderItems(items => items.filter(item => item.product !== productCode));
     } else {
-      setOrderItems((items) =>
-        items.map((item) =>
+      setOrderItems(items =>
+        items.map(item =>
           item.product === productCode
             ? { ...item, quantity: parseInt(quantity) }
             : item
@@ -148,37 +142,37 @@ export const OrdersPage = () => {
   // Calcular totales
   const calculateTotals = () => {
     return orderItems.reduce((acc, item) => {
-      const product = products.find((p) => p.code === item.product);
+      const product = products.find(p => p.code === item.product);
       const price = product?.price || 0;
-      return acc + price * item.quantity;
+      return acc + (price * item.quantity);
     }, 0);
   };
 
   // Manejar envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!validate()) return;
     if (orderItems.length === 0) {
-      alert("Debe agregar al menos un producto a la orden");
+      alert('Debe agregar al menos un producto a la orden');
       return;
     }
 
     try {
       // Crear la cabecera de la orden
       const orderData = {
-        client: formData.client,
+        client_id: formData.client,  // Enviar solo la CI como client_id
         currency: formData.currency,
         exchange_rate: parseFloat(formData.exchange_rate),
         _date: formData._date,
       };
 
-      const result = await ordersService.createHeader(orderData);
-
-      if (result.status === 201) {
+      const result = await create(orderData);
+      
+      if (result.success) {
         // Crear las líneas de la orden
         const headerId = result.data.id;
-
+        
         for (const item of orderItems) {
           await ordersService.createRow({
             ...item,
@@ -214,7 +208,9 @@ export const OrdersPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Órdenes</h1>
-          <p className="text-gray-600 mt-2">Gestiona las órdenes de venta</p>
+          <p className="text-gray-600 mt-2">
+            Gestiona las órdenes de venta
+          </p>
         </div>
         <div className="mt-4 sm:mt-0">
           <Button onClick={handleNewOrder} variant="primary">
@@ -240,10 +236,10 @@ export const OrdersPage = () => {
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               options={[
-                { value: "pending", label: "Pendiente" },
-                { value: "processing", label: "Procesando" },
-                { value: "completed", label: "Completada" },
-                { value: "cancelled", label: "Cancelada" },
+                { value: 'pending', label: 'Pendiente' },
+                { value: 'processing', label: 'Procesando' },
+                { value: 'completed', label: 'Completada' },
+                { value: 'cancelled', label: 'Cancelada' }
               ]}
               className="w-48"
             />
@@ -299,7 +295,7 @@ export const OrdersPage = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-900">
-                        {order.client?.name || "N/A"}
+                        {order.client?.name || 'N/A'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -318,14 +314,20 @@ export const OrdersPage = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge variant="success">Completada</Badge>
+                      <Badge variant="success">
+                        Completada
+                      </Badge>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex justify-end space-x-2">
-                        <button className="text-blue-600 hover:text-blue-900">
+                        <button
+                          className="text-blue-600 hover:text-blue-900"
+                        >
                           Ver
                         </button>
-                        <button className="text-green-600 hover:text-green-900">
+                        <button
+                          className="text-green-600 hover:text-green-900"
+                        >
                           Editar
                         </button>
                       </div>
@@ -367,7 +369,7 @@ export const OrdersPage = () => {
                 label="Cliente"
                 name="client"
                 value={formData.client}
-                onChange={(e) => handleChange("client", e.target.value)}
+                onChange={(e) => handleChange('client', e.target.value)}
                 options={clientOptions}
                 error={errors.client}
                 required
@@ -377,10 +379,10 @@ export const OrdersPage = () => {
                 label="Moneda"
                 name="currency"
                 value={formData.currency}
-                onChange={(e) => handleChange("currency", e.target.value)}
+                onChange={(e) => handleChange('currency', e.target.value)}
                 options={[
-                  { value: "VES", label: "Bolivares Soberanos (VES)" },
-                  { value: "USD", label: "Dólares Americanos (USD)" },
+                  { value: 'VES', label: 'Bolivares Soberanos (VES)' },
+                  { value: 'USD', label: 'Dólares Americanos (USD)' }
                 ]}
                 error={errors.currency}
                 required
@@ -393,7 +395,7 @@ export const OrdersPage = () => {
                 step="0.01"
                 min="0"
                 value={formData.exchange_rate}
-                onChange={(e) => handleChange("exchange_rate", e.target.value)}
+                onChange={(e) => handleChange('exchange_rate', e.target.value)}
                 error={errors.exchange_rate}
                 required
               />
@@ -403,7 +405,7 @@ export const OrdersPage = () => {
                 name="_date"
                 type="date"
                 value={formData._date}
-                onChange={(e) => handleChange("_date", e.target.value)}
+                onChange={(e) => handleChange('_date', e.target.value)}
                 error={errors._date}
                 required
               />
@@ -413,13 +415,15 @@ export const OrdersPage = () => {
           {/* Productos de la orden */}
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Productos</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Productos
+              </h3>
               <Select
                 placeholder="Agregar producto..."
                 onChange={(e) => {
                   if (e.target.value) {
                     addOrderItem(e.target.value);
-                    e.target.value = ""; // Reset select
+                    e.target.value = ''; // Reset select
                   }
                 }}
                 options={productOptions}
@@ -434,21 +438,17 @@ export const OrdersPage = () => {
             ) : (
               <div className="space-y-3">
                 {orderItems.map((item, index) => {
-                  const product = products.find((p) => p.code === item.product);
+                  const product = products.find(p => p.code === item.product);
                   const subtotal = product ? product.price * item.quantity : 0;
-
+                  
                   return (
-                    <div
-                      key={`${item.product}-${index}`}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
+                    <div key={`${item.product}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900">
-                          {product?.description || "Producto no encontrado"}
+                          {product?.description || 'Producto no encontrado'}
                         </h4>
                         <p className="text-sm text-gray-600">
-                          Código: {item.product} | Precio: $
-                          {product?.price || 0}
+                          Código: {item.product} | Precio: ${product?.price || 0}
                         </p>
                       </div>
                       <div className="flex items-center space-x-3">
@@ -456,12 +456,7 @@ export const OrdersPage = () => {
                           type="number"
                           min="0"
                           value={item.quantity}
-                          onChange={(e) =>
-                            updateItemQuantity(
-                              item.product,
-                              parseInt(e.target.value)
-                            )
-                          }
+                          onChange={(e) => updateItemQuantity(item.product, parseInt(e.target.value))}
                           className="w-20"
                         />
                         <div className="text-right">
@@ -480,7 +475,7 @@ export const OrdersPage = () => {
                     </div>
                   );
                 })}
-
+                
                 <div className="border-t pt-3">
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total:</span>
