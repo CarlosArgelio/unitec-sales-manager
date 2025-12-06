@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // Configuración base de la API
-const API_BASE_URL = 'http://localhost:8000/api/v1';
-// const API_BASE_URL = 'https://unitec-sales-manager.onrender.com/api/v1';
+// const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = 'https://unitec-sales-manager.onrender.com/api/v1';
 console.log(API_BASE_URL)
 
 // Crear instancia de axios
