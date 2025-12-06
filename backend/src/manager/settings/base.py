@@ -15,7 +15,7 @@ environ.Env.read_env(str(BASE_DIR / ".env"))
 
 class Base(Configuration):
     SECRET_KEY = SecretValue()
-    ALLOWED_HOSTS = ["unitec-sales-manager.onrender.com"]
+    ALLOWED_HOSTS = ["unitec-sales-manager.onrender.com", "localhost"]
 
     # Application definition
     INSTALLED_APPS = [
