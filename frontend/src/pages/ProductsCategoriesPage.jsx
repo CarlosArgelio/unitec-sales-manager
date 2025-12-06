@@ -74,12 +74,27 @@ export const ProductsCategoriesPage = () => {
     
     if (!validate()) return;
 
+    if (typeof formData.category !== 'string' || !formData.category.trim()) {
+      console.error('Categoría inválida:', formData.category);
+      return;
+    }
+
+    const selectedCategoryObj = categories?.find(cat => cat.code === formData.category);
+    
+    if (!selectedCategoryObj) {
+      console.error('Categoría no encontrada:', formData.category);
+      return;
+    }
+
     const productData = {
       code: formData.code,
       description: formData.description,
       price: parseFloat(formData.price),
       stock: parseInt(formData.stock),
-      category: formData.category,
+      category_data: {
+        code: selectedCategoryObj.code,
+        description: selectedCategoryObj.description
+      },
       is_active: formData.is_active
     };
 

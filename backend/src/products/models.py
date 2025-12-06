@@ -3,7 +3,7 @@ from shared.models import TimeStampedModel
 
 
 class Category(TimeStampedModel):
-    code: str = models.CharField(primary_key=True, editable=False)
+    code: str = models.CharField(primary_key=True, max_length=50)
     description: str = models.TextField(blank=False, null=False)
 
     def __str__(self) -> str:
@@ -11,7 +11,7 @@ class Category(TimeStampedModel):
 
 
 class Product(TimeStampedModel):
-    code: str = models.CharField(primary_key=True, editable=False)
+    code: str = models.CharField(primary_key=True, max_length=50, unique=True)
     description: str = models.TextField(blank=False, null=False)
     price: float = models.DecimalField(max_digits=100, decimal_places=2)
     stock: int = models.IntegerField(default=0)

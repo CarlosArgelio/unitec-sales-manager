@@ -29,7 +29,11 @@ export const CategoriesSection = ({ onCategorySelect }) => {
       description: ''
     },
     {
-      code: (value) => !value ? 'El código es requerido' : null,
+      code: (value) => {
+        if (!value) return 'El código es requerido';
+        if (editingCategory && !value.trim()) return 'El código es requerido';
+        return null;
+      },
       description: (value) => !value ? 'La descripción es requerida' : null
     }
   );
@@ -47,8 +51,8 @@ export const CategoriesSection = ({ onCategorySelect }) => {
     if (!validate()) return;
 
     const categoryData = {
-      code: formData.code,
-      description: formData.description
+      code: formData.code.trim(),
+      description: formData.description.trim()
     };
 
     try {
@@ -95,10 +99,14 @@ export const CategoriesSection = ({ onCategorySelect }) => {
     setEditingCategory(null);
     reset();
     setShowAddModal(true);
+    setFormData({
+      code: '',
+      description: ''
+    });
   };
 
   // Seleccionar categoría
-  const handleCategorySelect = (categoryCode) => {
+  const handleCategorySelectInternal = (categoryCode) => {
     if (onCategorySelect) {
       onCategorySelect(categoryCode);
     }
@@ -171,7 +179,7 @@ export const CategoriesSection = ({ onCategorySelect }) => {
                   {category.description}
                 </div>
                 <button
-                  onClick={() => handleCategorySelect(category.code)}
+                  onClick={() => handleCategorySelectInternal(category.code)}
                   className="text-xs text-blue-600 hover:text-blue-800"
                 >
                   Seleccionar para productos →
@@ -207,9 +215,9 @@ export const CategoriesSection = ({ onCategorySelect }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors.code}
-            disabled={!!editingCategory}
+            disabled={false}
             required
-            placeholder="Ej: BEBIDAS"
+            placeholder="Ej: 123456"
           />
 
           <Input
