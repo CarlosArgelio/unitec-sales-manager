@@ -12,10 +12,10 @@ export const useApiData = (apiFunction, dependencies = []) => {
       setError(null);
       const response = await apiFunction();
     //   console.log('🔍 API Response structure:', response);
-      
+
       // Manejar diferentes estructuras de respuesta
       let responseData = response.data;
-      
+
       // Si es un array, usarlo directamente
       if (Array.isArray(responseData)) {
         setData(responseData);
@@ -92,6 +92,7 @@ export const useCrud = (apiFunctions) => {
       const response = await apiFunctions.create(data);
       return { success: true, data: response.data };
     } catch (err) {
+      console.log(err)
       const errorMessage = err.response?.data?.message || 'Error al crear el elemento';
       setError(errorMessage);
       return { success: false, error: errorMessage };
@@ -150,16 +151,16 @@ export const useForm = (initialData = {}, validation = {}) => {
     const event = name;
     const fieldName = event.target.name;
     const fieldValue = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    
+
     setData(prev => ({ ...prev, [fieldName]: fieldValue }));
-    
+
     if (errors[fieldName]) {
       setErrors(prev => ({ ...prev, [fieldName]: null }));
     }
   }
   else {
     setData(prev => ({ ...prev, [name]: value }));
-    
+
     // Limpiar error cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
@@ -172,9 +173,9 @@ const handleBlur = (name) => {
   if (name && name.target && typeof name === 'object') {
     const event = name;
     const fieldName = event.target.name;
-    
+
     setTouched(prev => ({ ...prev, [fieldName]: true }));
-    
+
     // Validar campo específico
     if (validation[fieldName]) {
       const error = validation[fieldName](data[fieldName]);
@@ -184,7 +185,7 @@ const handleBlur = (name) => {
   // Si se pasa el nombre como parámetro
   else {
     setTouched(prev => ({ ...prev, [name]: true }));
-    
+
     // Validar campo específico
     if (validation[name]) {
       const error = validation[name](data[name]);
